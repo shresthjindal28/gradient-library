@@ -59,34 +59,34 @@ export default function Home() {
   };
 
   return (
-    <div className="app-container">
+    <div className="flex flex-col min-h-screen bg-black text-white">
       <Navigation 
         user={user} 
         onLogout={handleLogout} 
         setShowSignup={setShowSignup} 
       />
       
-      <div className="content-wrapper">
+      <div className="flex-1 w-full max-w-7xl mx-auto px-8 py-16">
         {!user ? (
-          <div className="auth-container">
-            <div className="auth-content">
-              <div className="auth-header">
-                <h1 className="hero-title">Gradient Library</h1>
-                <p className="hero-subtitle">Discover and download beautiful gradient images for your projects</p>
+          <div className="flex justify-center mb-24">
+            <div className="flex flex-col items-center max-w-[800px] text-center">
+              <div className="mb-10">
+                <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-transparent tracking-tight">Gradient Library</h1>
+                <p className="text-xl text-gray-200">Discover and download beautiful gradient images for your projects</p>
               </div>
               
-              <div className="auth-forms">
+              <div className="w-full max-w-[380px]">
                 {showSignup ? (
                   <Signup onSignup={handleSignup} />
                 ) : (
                   <Login onLogin={handleLogin} />
                 )}
-                <p className="auth-toggle">
+                <p className="text-center mt-6 text-gray-300">
                   {showSignup
                     ? "Already have an account? "
                     : "Don't have an account? "}
                   <button 
-                    className="auth-toggle-btn" 
+                    className="text-purple-400 font-medium hover:underline" 
                     onClick={() => setShowSignup(!showSignup)}
                   >
                     {showSignup ? "Login" : "Sign Up"}
@@ -97,13 +97,13 @@ export default function Home() {
           </div>
         ) : (
           user.isAdmin && (
-            <div className="admin-container">
+            <div className="mb-8">
               {showAdminPanel ? (
                 <AdminPanel token={token} />
               ) : (
-                <div className="admin-prompt">
+                <div className="flex justify-center my-8">
                   <button 
-                    className="admin-toggle-btn" 
+                    className="px-6 py-3 bg-gradient-to-r from-purple-700 to-purple-400 text-white rounded-lg font-medium transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(139,92,246,0.5)]" 
                     onClick={() => setShowAdminPanel(true)}
                   >
                     Open Admin Panel
@@ -117,13 +117,13 @@ export default function Home() {
         <Gallery token={token} />
       </div>
       
-      <footer className="app-footer">
-        <div className="footer-content">
+      <footer className="mt-auto py-8 px-8 border-t border-purple-900/20 bg-black/70 backdrop-blur">
+        <div className="flex justify-between items-center max-w-7xl mx-auto text-sm text-gray-300">
           <p>&copy; {new Date().getFullYear()} Gradient Library. All rights reserved.</p>
-          <div className="footer-links">
-            <a href="#" className="footer-link">Terms</a>
-            <a href="#" className="footer-link">Privacy</a>
-            <a href="#" className="footer-link">Contact</a>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-purple-400 transition-colors">Terms</a>
+            <a href="#" className="hover:text-purple-400 transition-colors">Privacy</a>
+            <a href="#" className="hover:text-purple-400 transition-colors">Contact</a>
           </div>
         </div>
       </footer>
