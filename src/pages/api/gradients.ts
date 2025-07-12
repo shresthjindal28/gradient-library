@@ -11,33 +11,60 @@ interface JwtUser {
 
 function verifyToken(req: NextApiRequest): JwtUser | null {
   const auth = req.headers.authorization;
-  if (!auth) return null;
+  if (!auth || !auth.startsWith('Bearer ')) return null;
   try {
     const token = auth.split(' ')[1];
-    return jwt.verify(token, process.env.JWT_SECRET || 'secret') as JwtUser;
-  } catch {
+    if (!token) return null;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret') as JwtUser;
+    if (decoded && typeof decoded === 'object' && decoded.isAdmin === true) {
+      return { ...decoded, isAdmin: true };
+    }
+    return null;
+  } catch (e) {
+    console.error('JWT verification failed:', e);
     return null;
   }
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
-  if (req.method === 'POST') {
-    const user = verifyToken(req);
-    if (!user || !user.isAdmin) {
-      return res.status(401).json({ message: 'Unauthorized' });
+  try {
+    if (req.method === 'POST') {
+      const user = verifyToken(req);
+      if (!user || !user.isAdmin) {
+        return res.status(401).json({ message: 'Unauthorized' });
+      }
+      // Handle case where req.body is a string (unparsed)
+      let body = req.body;
+      if (typeof body === 'string') {
+        try {
+          body = JSON.parse(body);
+        } catch {
+          console.error('Could not parse req.body string:', req.body);
+          return res.status(400).json({ message: 'Invalid JSON body' });
+        }
+      }
+      console.log('POST /api/gradients parsed body:', body); // Debug log
+      if (!body || typeof body !== 'object') {
+        console.error('No body or invalid body:', body);
+        return res.status(400).json({ message: 'Invalid or missing request body' });
+      }
+      const { name, imageUrl } = body;
+      if (!name || !imageUrl) {
+        console.error('Missing name or imageUrl:', body);
+        return res.status(400).json({ message: 'Name and imageUrl required' });
+      }
+      const createdBy = user._id || user.id || null;
+      const gradient = await Gradient.create({ name, imageUrl, createdBy });
+      return res.status(201).json({ message: 'Gradient added', gradient });
     }
-    const { name, imageUrl } = req.body;
-    if (!name || !imageUrl) {
-      return res.status(400).json({ message: 'Name and imageUrl required' });
+    if (req.method === 'GET') {
+      const gradients = await Gradient.find();
+      return res.status(200).json({ gradients });
     }
-    const createdBy = user._id || user.id || null;
-    const gradient = await Gradient.create({ name, imageUrl, createdBy });
-    return res.status(201).json({ message: 'Gradient added', gradient });
+    res.status(405).json({ message: 'Method not allowed' });
+  } catch (e) {
+    console.error('Gradients API error:', e);
+    res.status(500).json({ message: 'Internal server error', error: e instanceof Error ? e.message : String(e) });
   }
-  if (req.method === 'GET') {
-    const gradients = await Gradient.find();
-    return res.status(200).json({ gradients });
-  }
-  res.status(405).json({ message: 'Method not allowed' });
 }
