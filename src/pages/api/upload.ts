@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import { v2 as cloudinary } from 'cloudinary';
-import formidable, { File } from 'formidable';
+import formidable from 'formidable';
 import fs from 'fs';
 
 cloudinary.config({
@@ -28,8 +28,7 @@ function verifyToken(req: NextApiRequest): JwtUser | null {
       return { ...decoded, isAdmin: true };
     }
     return null;
-  } catch (e) {
-    console.error('JWT verification failed:', e);
+  } catch {
     return null;
   }
 }
@@ -67,11 +66,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const form = formidable({ multiples: false });
   form.parse(req, async (err, fields, files) => {
     if (err) {
-      console.error('Formidable error:', err);
       return res.status(400).json({ message: 'File parsing error' });
     }
-    const name = fields.name as string;
-    const file = files.file as File;
+    const name = Array.isArray(fields.name) ? fields.name[0] : fields.name ?? '';
+    const fileInput = files.file;
+    const file = Array.isArray(fileInput) ? fileInput[0] : fileInput;
     if (!file || !file.filepath) {
       return res.status(400).json({ message: 'No file uploaded' });
     }
@@ -81,7 +80,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       fs.unlink(file.filepath, () => {});
       res.status(200).json({ name, imageUrl: result.secure_url });
     } catch (e) {
-      console.error('Cloudinary upload error:', e);
+     
       res.status(500).json({ message: 'Upload failed', error: e instanceof Error ? e.message : String(e) });
     }
   });
