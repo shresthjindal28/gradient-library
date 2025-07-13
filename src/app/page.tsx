@@ -1,29 +1,44 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Gallery from "../components/Gallery";
 import Navigation from "../components/Navigation";
 
 export default function Home() {
+  // Generate random particle data only on the client to avoid hydration errors
+  const [particles, setParticles] = useState<Array<{
+    left: string;
+    top: string;
+    animationDelay: string;
+    animationDuration: string;
+  }>>([]);
+
+  useEffect(() => {
+    const newParticles = Array.from({ length: 15 }).map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      animationDelay: `${Math.random() * 3}s`,
+      animationDuration: `${4 + Math.random() * 3}s`,
+    }));
+    setParticles(newParticles);
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-black text-white overflow-hidden">
       <Navigation />
-      
       {/* Hero Section */}
       <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
-        
-        
         {/* Floating particles */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(15)].map((_, i) => (
+          {particles.map((particle, i) => (
             <div
               key={i}
               className="absolute w-1 h-1 bg-[#F6F6F6]/30 rounded-full animate-float"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${4 + Math.random() * 3}s`
+                left: particle.left,
+                top: particle.top,
+                animationDelay: particle.animationDelay,
+                animationDuration: particle.animationDuration,
               }}
             ></div>
           ))}

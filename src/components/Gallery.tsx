@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useUser, useAuth } from '@clerk/nextjs';
+import { useUser } from '@clerk/nextjs';
 import GradientCard from './GradientCard';
 import GradientModal from './GradientModal';
+import type { Gradient } from './GradientCard';
 import SearchBar from './SearchBar';
 import Carosal from './Carosal';
 
-interface Gradient {
-  _id: string;
-  name: string;
-  imageUrl: string;
-}
+
 
 // Local gradients using images from public folder
 const localGradients: Gradient[] = [
@@ -38,7 +35,6 @@ const localGradients: Gradient[] = [
 
 export default function Gallery() {
   const { user } = useUser();
-  const { getToken } = useAuth();
   const [gradients, setGradients] = useState<Gradient[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -59,22 +55,36 @@ export default function Gallery() {
   }, []);
 
   const handleDownload = async (id: string) => {
-    if (!user) {
-      setError('You must be logged in to download.');
-      setTimeout(() => setError(''), 3000);
-      return;
-    }
     try {
-      const token = await getToken();
-      const gradient = gradients.find(g => g._id === id);
-      const fileName = gradient ? `${gradient.name.replace(/[^a-zA-Z0-9]/g, '_')}.png` : 'gradient.png';
-      const response = await fetch(`/api/download?id=${id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+      // Try to find the gradient in both remote and local arrays using both _id and public_id
+      let gradient = gradients.find(g => g._id === id || g.public_id === id);
+      if (!gradient) {
+        gradient = localGradients.find(g => g._id === id || g.public_id === id);
+      }
+      if (!gradient) throw new Error('Gradient not found');
+      const imageUrl = gradient.imageUrl || gradient.url;
+      if (!imageUrl) throw new Error('Image URL not found');
+      const safeName = gradient.name ? gradient.name : gradient.public_id ? gradient.public_id : 'gradient';
+      const fileName = `${safeName.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+
+      // If the image is a local file (starts with /), download directly
+      if (imageUrl.startsWith('/')) {
+        const link = document.createElement('a');
+        link.href = imageUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return;
+      }
+
+      // For remote images, use the API route
+      const response = await fetch(`/api/download?url=${encodeURIComponent(imageUrl)}`);
       if (!response.ok) {
-        throw new Error('Download failed');
+        const text = await response.text();
+        setError(`Download failed: ${text}`);
+        setTimeout(() => setError(''), 3000);
+        return;
       }
       const blob = await response.blob();
       const blobUrl = window.URL.createObjectURL(blob);
@@ -85,12 +95,8 @@ export default function Gallery() {
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(blobUrl);
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err) && err.response?.status === 401) {
-        setError('Unauthorized: Please log in again.');
-      } else {
-        setError('Download failed.');
-      }
+    } catch {
+      setError('Download failed.');
       setTimeout(() => setError(''), 3000);
     }
   };
@@ -98,9 +104,15 @@ export default function Gallery() {
   const openModal = (gradient: Gradient) => setSelectedGradient(gradient);
   const closeModal = () => setSelectedGradient(null);
 
-  const filteredGradients = gradients.filter(g => 
-    g.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredGradients = gradients.filter(g => {
+    const name = g.name || g.public_id || '';
+    return name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
+  // Helper to get the correct id for a gradient (local or remote)
+  function getGradientId(gradient: Gradient) {
+    return gradient._id || gradient.public_id || '';
+  }
 
   return (
     <div className="min-h-screen bg-black">
@@ -155,15 +167,24 @@ export default function Gallery() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filteredGradients.map(gradient => (
-              <GradientCard
-                key={gradient._id}
-                gradient={gradient}
-                onDownload={handleDownload}
-                onOpenModal={openModal}
-                isUserLoggedIn={!!user}
-              />
-            ))}
+            {filteredGradients.map(gradient => {
+              const id = getGradientId(gradient);
+              return (
+                <GradientCard
+                  key={id}
+                  gradient={{
+                    ...gradient,
+                    name: gradient.name || gradient.public_id || 'Untitled',
+                    imageUrl: gradient.imageUrl || gradient.url || '',
+                    _id: gradient._id,
+                    public_id: gradient.public_id,
+                  }}
+                  onDownload={handleDownload}
+                  onOpenModal={openModal}
+                  isUserLoggedIn={!!user}
+                />
+              );
+            })}
           </div>
         )}
 
@@ -179,7 +200,7 @@ export default function Gallery() {
 
       {/* Modal for selected gradient */}
       <GradientModal
-        gradient={selectedGradient}
+        gradient={selectedGradient && selectedGradient._id ? selectedGradient as Gradient : null}
         onClose={closeModal}
         onDownload={handleDownload}
         isUserLoggedIn={!!user}

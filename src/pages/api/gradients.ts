@@ -1,110 +1,96 @@
+import formidable from 'formidable';
+import fs from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import dbConnect from '../../utils/dbConnect';
-import Gradient from '../../models/Gradient';
-import { getAuth } from '@clerk/nextjs/server';
-import jwt from 'jsonwebtoken';
+import { requireClerkAuth } from './clerkAuth';
+import { v2 as cloudinary } from 'cloudinary';
 
-// Helper function to verify JWT token
-function verifyToken(req: NextApiRequest) {
-  const auth = req.headers.authorization;
-  if (!auth) return null;
-  try {
-    const token = auth.split(' ')[1];
-    return jwt.verify(token, process.env.JWT_SECRET || 'secret');
-  } catch {
-    return null;
-  }
-}
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-// Helper function to verify Clerk token
-async function verifyClerkToken(token: string) {
-  try {
-    // For now, we'll use a simple approach - if it's a Clerk token, we'll accept it
-    // In production, you should verify the token with Clerk's API
-    if (token && token.length > 50) { // Clerk tokens are typically longer than JWT tokens
-      return { userId: 'clerk_user', username: 'clerk_user' };
-    }
-    return null;
-  } catch {
-    return null;
-  }
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+async function uploadToCloudinary(filePath: string): Promise<{ secure_url: string }> {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.upload(
+      filePath,
+      { folder: 'gradients' },
+      (error, result) => {
+        if (error || !result) {
+          reject(error);
+        } else {
+          resolve({ secure_url: result.secure_url });
+        }
+      }
+    );
+  });
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    // Test database connection first
-    await dbConnect();
-  } catch (dbError) {
-    return res.status(500).json({ 
-      message: 'Database connection failed', 
-      error: dbError instanceof Error ? dbError.message : String(dbError)
-    });
-  }
-  
-  try {
+    await requireClerkAuth(req);
+    if (req.method === 'GET') {
+      // List all gradients in the 'gradients' folder on Cloudinary
+      const result = await cloudinary.search.expression('folder:gradients').sort_by('created_at','desc').max_results(100).execute();
+      const gradients = result.resources.map((img: { public_id: string; secure_url: string; created_at: string }) => ({
+        public_id: img.public_id,
+        url: img.secure_url,
+        created_at: img.created_at
+      }));
+      return res.status(200).json({ gradients });
+    }
     if (req.method === 'POST') {
-      // Try authentication with token from header
-      let userId: string | null = null;
-      
-      const auth = req.headers.authorization;
-      if (auth) {
-        const token = auth.split(' ')[1];
-        
-        // Try Clerk authentication first
-        try {
-          const clerkAuth = await getAuth(req);
-          userId = clerkAuth.userId;
-        } catch {
-          // Try JWT token
-          const jwtUser = verifyToken(req);
-          if (jwtUser && typeof jwtUser === 'object' && 'username' in jwtUser) {
-            userId = jwtUser.username as string;
-          } else {
-            // Try Clerk token
-            const clerkUser = await verifyClerkToken(token);
-            if (clerkUser) {
-              userId = clerkUser.username;
-            }
+      const form = formidable({ multiples: false });
+      form.parse(req, async (err, fields, files) => {
+        if (err) {
+          // eslint-disable-next-line no-console
+          // console.error('Formidable error:', err);
+          return res.status(400).json({ message: 'File parsing error', error: String(err) });
+        }
+        const name = Array.isArray(fields.name) ? fields.name[0] : fields.name ?? '';
+        // Try to find the file field regardless of its key
+        let file: formidable.File | null = null;
+        if (files.file) {
+          const fileInput = files.file;
+          file = Array.isArray(fileInput) ? fileInput[0] : fileInput;
+        } else {
+          // Try to find the first file in files object
+          const fileKeys = Object.keys(files);
+          if (fileKeys.length > 0) {
+            const fileInput = files[fileKeys[0]];
+            file = Array.isArray(fileInput) ? fileInput[0] : fileInput;
+            if (!file) file = null;
           }
         }
-      }
-      
-      if (!userId) {
-        // For development, allow requests without authentication
-        userId = 'dev_user';
-      }
-
-      // Handle case where req.body is a string (unparsed)
-      let body = req.body;
-      if (typeof body === 'string') {
-        try {
-          body = JSON.parse(body);
-        } catch {
-          return res.status(400).json({ message: 'Invalid JSON body' });
+        if (!file || !file.filepath) {
+          // eslint-disable-next-line no-console
+          // console.error('No file uploaded. fields:', fields, 'files:', files);
+          return res.status(400).json({ message: 'No file uploaded', fields, files });
         }
-      }
-      
-      if (!body || typeof body !== 'object') {
-        return res.status(400).json({ message: 'Invalid or missing request body' });
-      }
-      const { name, imageUrl } = body;
-      if (!name || !imageUrl) {
-        return res.status(400).json({ message: 'Name and imageUrl required' });
-      }
-      
-      const gradient = await Gradient.create({ name, imageUrl, createdBy: userId });
-      return res.status(201).json({ message: 'Gradient added', gradient });
-    }
-    if (req.method === 'GET') {
-      const gradients = await Gradient.find();
-      return res.status(200).json({ gradients });
+        try {
+          const result = await uploadToCloudinary(file.filepath);
+          fs.unlink(file.filepath, () => {});
+          res.status(200).json({ name, imageUrl: result.secure_url });
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          // console.error('Cloudinary upload error:', e);
+          res.status(500).json({ 
+            message: 'Upload failed', 
+            error: e instanceof Error ? e.message : String(e),
+            details: process.env.NODE_ENV === 'development' ? e instanceof Error ? e.stack : undefined : undefined
+          });
+        }
+      });
+      return;
     }
     res.status(405).json({ message: 'Method not allowed' });
   } catch (e) {
-    res.status(500).json({ 
-      message: 'Internal server error', 
-      error: e instanceof Error ? e.message : String(e),
-      details: process.env.NODE_ENV === 'development' ? e instanceof Error ? e.stack : undefined : undefined
-    });
+    res.status(401).json({ message: (e instanceof Error ? e.message : 'Unauthorized') });
   }
 }

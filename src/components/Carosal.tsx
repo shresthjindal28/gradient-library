@@ -4,10 +4,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 
+// Unified Gradient interface for both local and Cloudinary gradients
 interface Gradient {
-  _id: string;
-  name: string;
-  imageUrl: string;
+  _id?: string;
+  public_id?: string;
+  name?: string;
+  imageUrl?: string;
+  url?: string;
+  created_at?: string;
 }
 
 interface CarouselProps {
@@ -68,7 +72,7 @@ export default function Carousel({
   return (
     <div className="relative w-full flex items-center justify-center flex-col mb-10">
             {/* Main Carousel Container */}
-      <div className="relative h-[70vh] w-[70vw] overflow-hidden rounded-2xl border-2 border-transparent bg-gradient-to-r from-[#A2D5C6] via-[#CFFFE2] to-[#F6F6F6] bg-clip-border before:absolute before:inset-0 before:rounded-2xl before:p-[2px] before:bg-gradient-to-r before:from-[#A2D5C6] before:via-[#CFFFE2] before:to-[#F6F6F6] before:animate-pulse after:absolute after:inset-0 after:rounded-2xl after:bg-gradient-to-r after:from-[#A2D5C6]/50 after:via-[#CFFFE2]/50 after:to-[#F6F6F6]/50 after:animate-pulse after:animate-[pulse_3s_ease-in-out_infinite] shadow-[0_0_20px_rgba(162,213,198,0.4),0_0_40px_rgba(207,255,226,0.3),0_0_60px_rgba(246,246,246,0.2)] hover:shadow-[0_0_30px_rgba(162,213,198,0.6),0_0_60px_rgba(207,255,226,0.4),0_0_90px_rgba(246,246,246,0.3)] transition-all duration-1000">
+      <div className="relative h-[70vh] w-[70vw] overflow-hidden rounded-2xl border-2 border-transparent bg-gradient-to-r from-[#A2D5C6] via-[#CFFFE2] to-[#F6F6F6] bg-clip-border before:absolute before:inset-0 before:rounded-2xl before:p-[2px] before:bg-gradient-to-r before:from-[#A2D5C6] before:via-[#CFFFE2] before:to-[#F6F6F6] before:animate-pulse after:absolute after:inset-0 after:rounded-2xl after:bg-gradient-to-r after:from-[#A2D5C6]/50 after:via-[#CFFFE2]/50 after:to-[#F6F6F6]/50 after:animate-[pulse_3s_ease-in-out_infinite] shadow-[0_0_20px_rgba(162,213,198,0.4),0_0_40px_rgba(207,255,226,0.3),0_0_60px_rgba(246,246,246,0.2)] hover:shadow-[0_0_30px_rgba(162,213,198,0.6),0_0_60px_rgba(207,255,226,0.4),0_0_90px_rgba(246,246,246,0.3)] transition-all duration-1000">
         <div className="relative h-full w-full rounded-2xl bg-gradient-to-br from-[#A2D5C6]/20 to-[#CFFFE2]/20">
           <div ref={carouselRef} className="relative w-full h-full">
           {gradients.map((gradient, index) => (
@@ -86,8 +90,8 @@ export default function Carousel({
             >
               <div className="w-full h-full">
                 <Image 
-                  src={gradient.imageUrl} 
-                  alt={gradient.name} 
+                  src={gradient.imageUrl || '/placeholder.png'} 
+                  alt={gradient.name || 'Gradient image'} 
                   width={400} 
                   height={400} 
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 brightness-125" 

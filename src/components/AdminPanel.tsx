@@ -34,35 +34,26 @@ export default function AdminPanel() {
     try {
       // Get Clerk token for authentication
       const token = await getToken();
-      
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('file', file);
-      
-      // Upload file with authentication
-      const res = await axios.post('/api/upload', formData, {
+
+      const gradientsFormData = new FormData();
+      gradientsFormData.append('name', name);
+      gradientsFormData.append('file', file);
+      await axios.post('/api/gradients', gradientsFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,
         },
       });
-      
-      // Add to gradients DB with authentication
-      await axios.post('/api/gradients', { name, imageUrl: res.data.imageUrl }, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-      
+
       setMessage('Gradient successfully uploaded!');
       setName('');
       setFile(null);
       setPreviewUrl(null);
-      
+
       // Reset file input
       const fileInput = document.getElementById('gradient-file') as HTMLInputElement;
       if (fileInput) fileInput.value = '';
-      
+
     } catch (err: unknown) {
       if (axios.isAxiosError(err) && err.response?.data?.message) {
         setMessage(err.response.data.message);
