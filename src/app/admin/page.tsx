@@ -132,179 +132,197 @@ export default function AdminPage() {
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Dynamic Animated Background */}
+    <div className="min-h-screen relative overflow-hidden bg-black">
+      {/* Ultra Modern Dynamic Background */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"></div>
+        {/* Base gradient mesh */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-slate-900 via-gray-900 to-black"></div>
         
-        {/* Floating Gradient Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-purple-600/30 to-pink-600/30 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-blue-600/30 to-indigo-600/30 rounded-full blur-3xl animate-pulse [animation-delay:1s]"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-emerald-600/20 to-teal-600/20 rounded-full blur-3xl animate-pulse [animation-delay:2s]"></div>
+        {/* Animated geometric patterns */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-20 left-20 w-96 h-96 bg-gradient-conic from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-conic from-emerald-500/20 via-cyan-500/20 to-blue-500/20 rounded-full blur-3xl animate-pulse [animation-delay:2s]"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-conic from-purple-500/20 via-pink-500/20 to-red-500/20 rounded-full blur-3xl animate-pulse [animation-delay:4s]"></div>
+        </div>
         
-        {/* Animated Grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
+        {/* Modern grid overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_70%_80%_at_50%_50%,#000_50%,transparent_100%)]"></div>
+        
+        {/* Subtle noise texture */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSBiYXNlRnJlcXVlbmN5PSIwLjkiIG51bU9jdGF2ZXM9IjQiIHJlc3VsdD0ibm9pc2UiLz48ZmVDb2xvck1hdHJpeCBpbj0ibm9pc2UiIHR5cGU9InNhdHVyYXRlIiB2YWx1ZXM9IjAiLz48ZmVDb21wb25lbnRUcmFuc2ZlciBpbj0ibm9pc2UiIHR5cGU9ImRpc2NyZXRlIiB0YWJsZVZhbHVlcz0iMCAwLjEiLz48L2ZpbHRlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI25vaXNlKSIgb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-20"></div>
+      </div>
+
+      {/* Navigation Bar */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/5">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">GA</span>
+              </div>
+              <h1 className="text-xl font-bold text-white">Admin Portal</h1>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="px-4 py-2 bg-white/5 backdrop-blur-sm rounded-full border border-white/10">
+                <span className="text-sm text-white/80">Welcome, {user?.firstName || 'Admin'}</span>
+              </div>
+              <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center">
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 pt-24 pb-12">
-        <div className="container mx-auto px-4">
-          <div className="max-w-7xl mx-auto">
+      <div className="relative z-10 pt-32 pb-20">
+        <div className="container mx-auto px-6">
+          <div className="max-w-7xl mx-auto space-y-12">
             
-            {/* Hero Header */}
+            {/* Hero Section */}
             <div className="text-center mb-16">
-              <div className="inline-block p-1 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 rounded-full mb-6">
-                <div className="bg-slate-900 rounded-full px-6 py-2">
-                  <span className="text-sm font-medium bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                    Welcome back, {user?.firstName || 'Admin'}
+              <div className="inline-block mb-6">
+                <div className="px-6 py-3 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 backdrop-blur-xl border border-white/10 rounded-full">
+                  <span className="text-sm font-medium bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    ⚡ Admin Dashboard
                   </span>
                 </div>
               </div>
               
-              <h1 className="text-6xl md:text-7xl font-black mb-6">
-                <span className="bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent tracking-tight">
-                  Admin
-                </span>
+              <h1 className="text-5xl md:text-6xl font-black mb-6 text-white leading-tight">
+                Gradient Library
                 <br />
-                <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400 bg-clip-text text-transparent tracking-tight">
-                  Command Center
+                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  Control Center
                 </span>
               </h1>
               
-              <p className="text-white/70 text-xl max-w-2xl mx-auto leading-relaxed">
-                Orchestrate your gradient universe with precision and style. 
-                Every pixel, every hue, under your complete control.
+              <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
+                Manage your gradient collection, monitor user activity, and maintain the quality of your design library with precision tools.
               </p>
             </div>
 
-            {/* Upload Section - Enhanced */}
-            <div className="mb-16">
-              <div className="bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-indigo-500/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
-                <div className="max-w-4xl mx-auto">
+            {/* Quick Actions Dashboard */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+              {/* Upload Quick Action */}
+              <div className="lg:col-span-2">
+                <div className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-2xl border border-white/10 rounded-2xl p-8 h-full">
                   <AdminPanel />
+                </div>
+              </div>
+              
+              {/* Stats Sidebar */}
+              <div className="space-y-6">
+                <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 backdrop-blur-2xl border border-white/10 rounded-2xl p-6">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                    <span className="w-2 h-2 bg-green-400 rounded-full mr-3 animate-pulse"></span>
+                    Platform Status
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-400">Total Gradients</span>
+                      <span className="text-lg font-bold text-white">1,247</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-400">Active Users</span>
+                      <span className="text-lg font-bold text-emerald-400">342</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-400">Downloads Today</span>
+                      <span className="text-lg font-bold text-blue-400">89</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-400">System Health</span>
+                      <span className="text-sm font-semibold text-green-400">Excellent</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 backdrop-blur-2xl border border-white/10 rounded-2xl p-6">
+                  <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
+                  <div className="space-y-3">
+                    <button className="w-full py-2 px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm text-white transition-all duration-200 text-left">
+                      🔄 Sync Database
+                    </button>
+                    <button className="w-full py-2 px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm text-white transition-all duration-200 text-left">
+                      📊 Generate Report
+                    </button>
+                    <button className="w-full py-2 px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm text-white transition-all duration-200 text-left">
+                      🧹 Cleanup Cache
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Gradient Management Section */}
-            <div className="mb-16">
-              <div className="bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-indigo-500/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+            {/* Management Sections */}
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+              {/* Gradient Management */}
+              <div className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-2xl border border-white/10 rounded-2xl p-8">
                 <AdminGradientManager />
               </div>
-            </div>
 
-            {/* User Management Section */}
-            <div className="mb-16">
-              <div className="bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-blue-500/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+              {/* User Management */}
+              <div className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-2xl border border-white/10 rounded-2xl p-8">
                 <AdminUserManager />
               </div>
             </div>
 
-            {/* Admin Features Grid */}
-            <div className="mb-16">
-              <h2 className="text-4xl font-bold text-center mb-12">
-                <span className="bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                  Power Tools & Analytics
+            {/* Advanced Features Grid */}
+            <div className="mt-16">
+              <h2 className="text-3xl font-bold text-center mb-12">
+                <span className="bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
+                  Advanced Tools & Analytics
                 </span>
               </h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {adminFeatures.map((feature) => (
                   <div
                     key={feature.id}
-                    className={`group relative cursor-pointer transition-all duration-500 transform hover:scale-105 ${
-                      activeCard === feature.id ? 'scale-105' : ''
+                    className={`group relative cursor-pointer transition-all duration-300 transform hover:scale-[1.02] ${
+                      activeCard === feature.id ? 'scale-[1.02]' : ''
                     }`}
                     onMouseEnter={() => setActiveCard(feature.id)}
                     onMouseLeave={() => setActiveCard(null)}
                   >
-                    {/* Card */}
-                    <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${feature.bgGradient} backdrop-blur-xl border border-white/10 p-6 h-full shadow-xl`}>
+                    <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-2xl border border-white/10 p-6 h-full hover:border-white/20 transition-all duration-300">
                       
-                      {/* Gradient Border Effect */}
-                      <div className={`absolute inset-0 bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-20 transition-opacity duration-500 rounded-2xl`}></div>
-                      
-                      {/* Content */}
-                      <div className="relative z-10">
-                        {/* Icon & Status */}
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="text-4xl">{feature.icon}</div>
-                          <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                            feature.active 
-                              ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
-                              : 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                          }`}>
-                            {feature.stats}
-                          </div>
-                        </div>
-                        
-                        {/* Title */}
-                        <h3 className={`text-xl font-bold mb-3 bg-gradient-to-r ${feature.gradient} bg-clip-text text-transparent`}>
-                          {feature.title}
-                        </h3>
-                        
-                        {/* Description */}
-                        <p className="text-white/70 text-sm leading-relaxed mb-4">
-                          {feature.description}
-                        </p>
-                        
-                        {/* Action Button */}
-                        <div className={`inline-flex items-center text-sm font-semibold ${
-                          feature.active 
-                            ? 'text-white group-hover:text-purple-300' 
-                            : 'text-white/50'
-                        } transition-colors duration-300`}>
-                          {feature.active ? 'Access Now' : 'Coming Soon'}
-                          {feature.active && (
-                            <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                          )}
-                        </div>
+                      {/* Status indicator */}
+                      <div className="absolute top-4 right-4">
+                        <div className={`w-2 h-2 rounded-full ${
+                          feature.active ? 'bg-green-400 animate-pulse' : 'bg-gray-500'
+                        }`}></div>
                       </div>
                       
-                      {/* Hover Glow Effect */}
-                      <div className={`absolute inset-0 bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-2xl blur-xl`}></div>
+                      {/* Icon */}
+                      <div className="w-12 h-12 mb-4 bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl flex items-center justify-center text-xl group-hover:scale-110 transition-transform duration-300">
+                        {feature.icon}
+                      </div>
+                      
+                      {/* Content */}
+                      <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-blue-300 transition-colors duration-300">
+                        {feature.title}
+                      </h3>
+                      
+                      <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                        {feature.description}
+                      </p>
+                      
+                      {/* Status badge */}
+                      <div className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                        feature.active 
+                          ? 'bg-green-500/10 text-green-400 border border-green-500/20' 
+                          : 'bg-gray-500/10 text-gray-400 border border-gray-500/20'
+                      }`}>
+                        {feature.stats}
+                      </div>
+                      
+                      {/* Hover effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-
-            {/* Quick Stats Section */}
-            <div className="bg-gradient-to-r from-slate-800/50 to-purple-800/50 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
-              <h3 className="text-2xl font-bold text-center mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-                Platform Overview
-              </h3>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="text-center group cursor-pointer">
-                  <div className="text-3xl font-black bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
-                    1,247
-                  </div>
-                  <div className="text-white/70 text-sm">Total Gradients</div>
-                </div>
-                
-                <div className="text-center group cursor-pointer">
-                  <div className="text-3xl font-black bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
-                    5,832
-                  </div>
-                  <div className="text-white/70 text-sm">Downloads</div>
-                </div>
-                
-                <div className="text-center group cursor-pointer">
-                  <div className="text-3xl font-black bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
-                    342
-                  </div>
-                  <div className="text-white/70 text-sm">Active Users</div>
-                </div>
-                
-                <div className="text-center group cursor-pointer">
-                  <div className="text-3xl font-black bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-300">
-                    98.7%
-                  </div>
-                  <div className="text-white/70 text-sm">Uptime</div>
-                </div>
               </div>
             </div>
           </div>
