@@ -16,21 +16,26 @@ interface Gradient {
 const localGradients: Gradient[] = [
   {
     _id: 'local-1',
-    name: 'ChatGPT Image',
+    name: 'ChatGPT Image 1',
     imageUrl: '/ChatGPT Image Jul 13, 2025, 12_44_18 PM.png'
   },
   {
     _id: 'local-2',
-    name: 'Galactic',
-    imageUrl: '/Galactic.png'
+    name: 'ChatGPT Image 2',
+    imageUrl: '/ChatGPT Image Jul 13, 2025, 01_04_10 PM.png'
   },
   {
     _id: 'local-3',
-    name: 'Gloosy Wave',
-    imageUrl: '/gloosy-wave5.png'
+    name: 'ChatGPT Image 3',
+    imageUrl: '/ChatGPT Image Jul 13, 2025, 01_08_46 PM.png'
   },
   {
     _id: 'local-4',
+    name: 'ChatGPT Image 4',
+    imageUrl: '/ChatGPT Image Jul 13, 2025, 01_31_28 PM.png'
+  },
+  {
+    _id: 'local-5',
     name: 'Milad Fakurian',
     imageUrl: '/milad-fakurian-nY14Fs8pxT8-unsplash.jpg'
   }
