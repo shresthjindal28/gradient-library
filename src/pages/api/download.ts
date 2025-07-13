@@ -46,7 +46,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Try Clerk authentication first
       try {
         const clerkAuth = await getAuth(req);
-        user = { userId: clerkAuth.userId, username: clerkAuth.userId };
+        if (clerkAuth.userId) {
+          user = { userId: clerkAuth.userId, username: clerkAuth.userId };
+        }
       } catch {
         // If Clerk auth fails, try JWT token
         try {

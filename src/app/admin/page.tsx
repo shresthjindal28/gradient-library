@@ -8,7 +8,6 @@ import AdminPanel from '../../components/AdminPanel';
 export default function AdminPage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
-  const [token, setToken] = useState<string | null>(null);
   const [activeCard, setActiveCard] = useState<number | null>(null);
   
   // Check if user is admin (using the same logic as Navigation component)
@@ -25,12 +24,6 @@ export default function AdminPage() {
       // User is signed in but not admin, redirect to home
       router.push('/');
       return;
-    }
-
-    // For now, we'll create a temporary token
-    // In a real app, you'd get this from your authentication system
-    if (user && isAdmin) {
-      setToken('temporary-admin-token');
     }
   }, [user, isLoaded, isAdmin, router]);
 
@@ -192,11 +185,9 @@ export default function AdminPage() {
                   <p className="text-white/70">Transform your creative visions into shareable masterpieces</p>
                 </div>
                 
-                {token && (
-                  <div className="max-w-4xl mx-auto">
-                    <AdminPanel token={token} />
-                  </div>
-                )}
+                <div className="max-w-4xl mx-auto">
+                  <AdminPanel />
+                </div>
               </div>
             </div>
 
