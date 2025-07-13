@@ -3,13 +3,18 @@ import mongoose, { Schema, Document } from 'mongoose';
 export interface IGradient extends Document {
   name: string;
   imageUrl: string;
-  createdBy: mongoose.Types.ObjectId;
+  createdBy: string;
 }
 
 const GradientSchema: Schema = new Schema({
   name: { type: String, required: true },
   imageUrl: { type: String, required: true },
-  createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  createdBy: { type: String, required: true }, // Use String type to accept Clerk user IDs
 });
 
-export default mongoose.models.Gradient || mongoose.model<IGradient>('Gradient', GradientSchema);
+// Force model refresh to clear any cached schema
+if (mongoose.models.Gradient) {
+  delete mongoose.models.Gradient;
+}
+
+export default mongoose.model<IGradient>('Gradient', GradientSchema);
