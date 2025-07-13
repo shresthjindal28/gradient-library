@@ -4,6 +4,7 @@ import { Inter, Poppins } from "next/font/google";
 import { ClerkProvider } from '@clerk/nextjs';
 import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
+import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -35,6 +36,7 @@ export default function RootLayout({
           <div className="gradient-bg-animation"></div>
           <SmoothScroll>
             {children}
+            <Analytics />
           </SmoothScroll>
         </body>
       </html>
