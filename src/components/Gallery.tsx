@@ -25,11 +25,6 @@ const localGradients: Gradient[] = [
     imageUrl: '/ChatGPT Image Jul 13, 2025, 01_04_10 PM.png'
   },
   {
-    _id: 'local-3',
-    name: 'ChatGPT Image 3',
-    imageUrl: '/ChatGPT Image Jul 13, 2025, 01_08_46 PM.png'
-  },
-  {
     _id: 'local-4',
     name: 'ChatGPT Image 4',
     imageUrl: '/ChatGPT Image Jul 13, 2025, 01_31_28 PM.png'
