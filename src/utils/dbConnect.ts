@@ -1,14 +1,19 @@
+/* eslint-disable no-console */
 import mongoose from 'mongoose';
 
+// Production MongoDB Atlas configuration
 let MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/gradientlib';
+
+// For production, ensure we're using MongoDB Atlas
+if (process.env.NODE_ENV === 'production') {
+  if (!MONGODB_URI.includes('mongodb+srv://')) {
+    throw new Error('MongoDB Atlas connection string required for production');
+  }
+}
 
 // Ensure the connection string has a database name
 if (MONGODB_URI.includes('mongodb+srv://') && !MONGODB_URI.includes('/gradientlib')) {
   MONGODB_URI += '/gradientlib';
-}
-
-if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable');
 }
 
 interface CachedConnection {
@@ -48,26 +53,35 @@ function createAlternativeConnectionStrings(originalUri: string): string[] {
   return alternatives;
 }
 
+type MongoError = Error & { code?: string; syscall?: string };
+
 async function dbConnect() {
   if (cached!.conn) return cached!.conn;
   
   if (!cached!.promise) {
     console.log('Connecting to MongoDB...');
-    console.log('MongoDB URI:', MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, '//***:***@')); // Hide credentials in logs
+    console.log('MongoDB URI:', MONGODB_URI.replace(/\/\/[^:]+:[^@]+@/, '//***:***@'));
     
     const connectionOptions = {
       bufferCommands: false,
-      maxPoolSize: 10,
-      serverSelectionTimeoutMS: 30000, // Increased from 5000
-      socketTimeoutMS: 45000,
-      connectTimeoutMS: 30000, // Added connection timeout
+      maxPoolSize: process.env.NODE_ENV === 'production' ? 20 : 10,
+      serverSelectionTimeoutMS: process.env.NODE_ENV === 'production' ? 60000 : 30000,
+      socketTimeoutMS: process.env.NODE_ENV === 'production' ? 90000 : 45000,
+      connectTimeoutMS: process.env.NODE_ENV === 'production' ? 60000 : 30000,
       retryWrites: true,
       retryReads: true,
       // DNS resolution options
       family: 4, // Force IPv4 to avoid IPv6 issues
       // Additional options for better reliability
-      heartbeatFrequencyMS: 10000,
-      maxIdleTimeMS: 30000,
+      heartbeatFrequencyMS: process.env.NODE_ENV === 'production' ? 30000 : 10000,
+      maxIdleTimeMS: process.env.NODE_ENV === 'production' ? 60000 : 30000,
+      // Production-specific options
+      ...(process.env.NODE_ENV === 'production' && {
+        ssl: true,
+        sslValidate: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }),
     };
 
     // Try multiple connection strategies
@@ -117,7 +131,10 @@ async function dbConnect() {
         cached!.promise = null;
         
         // If it's a DNS resolution error, provide helpful suggestions
-        if (error instanceof Error && ((error as any).code === 'ETIMEOUT' || (error as any).syscall === 'querySrv')) {
+        if (
+          error instanceof Error &&
+          (((error as MongoError).code === 'ETIMEOUT') || ((error as MongoError).syscall === 'querySrv'))
+        ) {
           console.error('DNS resolution failed. This could be due to:');
           console.error('1. Network connectivity issues');
           console.error('2. Firewall blocking MongoDB Atlas');

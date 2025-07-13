@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import { ClerkProvider } from '@clerk/nextjs';
+import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
 
 const inter = Inter({
@@ -32,7 +33,9 @@ export default function RootLayout({
       <html lang="en">
         <body className={`${inter.variable} ${poppins.variable} antialiased`}>
           <div className="gradient-bg-animation"></div>
-          {children}
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
         </body>
       </html>
     </ClerkProvider>

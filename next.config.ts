@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Enable manual routing for production hosting
+  trailingSlash: false,
 };
 
 export default nextConfig;
