@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useUser } from '@clerk/nextjs';
 import GradientCard from './GradientCard';
 import GradientModal from './GradientModal';
-import type { Gradient } from './GradientCard';
+import type { Gradient } from '../types/gradient';
 import SearchBar from './SearchBar';
 import Carosal from './Carosal';
 
@@ -13,23 +13,35 @@ import Carosal from './Carosal';
 const localGradients: Gradient[] = [
   {
     _id: 'local-1',
+    public_id: 'local-1',
     name: 'ChatGPT Image 1',
-    imageUrl: '/ChatGPT Image Jul 13, 2025, 12_44_18 PM.png'
+    url: '/ChatGPT Image Jul 13, 2025, 12_44_18 PM.png',
+    imageUrl: '/ChatGPT Image Jul 13, 2025, 12_44_18 PM.png',
+    created_at: '2025-07-13T00:00:00Z'
   },
   {
     _id: 'local-2',
+    public_id: 'local-2',
     name: 'ChatGPT Image 2',
-    imageUrl: '/ChatGPT Image Jul 13, 2025, 01_04_10 PM.png'
+    url: '/ChatGPT Image Jul 13, 2025, 01_04_10 PM.png',
+    imageUrl: '/ChatGPT Image Jul 13, 2025, 01_04_10 PM.png',
+    created_at: '2025-07-13T00:00:00Z'
   },
   {
     _id: 'local-4',
+    public_id: 'local-4',
     name: 'ChatGPT Image 4',
-    imageUrl: '/ChatGPT Image Jul 13, 2025, 01_31_28 PM.png'
+    url: '/ChatGPT Image Jul 13, 2025, 01_31_28 PM.png',
+    imageUrl: '/ChatGPT Image Jul 13, 2025, 01_31_28 PM.png',
+    created_at: '2025-07-13T00:00:00Z'
   },
   {
     _id: 'local-5',
+    public_id: 'local-5',
     name: 'Milad Fakurian',
-    imageUrl: '/milad-fakurian-nY14Fs8pxT8-unsplash.jpg'
+    url: '/milad-fakurian-nY14Fs8pxT8-unsplash.jpg',
+    imageUrl: '/milad-fakurian-nY14Fs8pxT8-unsplash.jpg',
+    created_at: '2025-07-13T00:00:00Z'
   }
 ];
 
@@ -200,7 +212,7 @@ export default function Gallery() {
 
       {/* Modal for selected gradient */}
       <GradientModal
-        gradient={selectedGradient && selectedGradient._id ? selectedGradient as Gradient : null}
+        gradient={selectedGradient && (selectedGradient._id || selectedGradient.public_id) ? selectedGradient : null}
         onClose={closeModal}
         onDownload={handleDownload}
         isUserLoggedIn={!!user}

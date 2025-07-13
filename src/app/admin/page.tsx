@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import AdminPanel from '../../components/AdminPanel';
+import AdminGradientManager from '../../components/AdminGradientManager';
+import AdminUserManager from '../../components/AdminUserManager';
 
 export default function AdminPage() {
   const { user, isLoaded } = useUser();
@@ -178,16 +180,23 @@ export default function AdminPage() {
             {/* Upload Section - Enhanced */}
             <div className="mb-16">
               <div className="bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-indigo-500/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mb-3">
-                    Gradient Upload Studio
-                  </h2>
-                  <p className="text-white/70">Transform your creative visions into shareable masterpieces</p>
-                </div>
-                
                 <div className="max-w-4xl mx-auto">
                   <AdminPanel />
                 </div>
+              </div>
+            </div>
+
+            {/* Gradient Management Section */}
+            <div className="mb-16">
+              <div className="bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-indigo-500/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+                <AdminGradientManager />
+              </div>
+            </div>
+
+            {/* User Management Section */}
+            <div className="mb-16">
+              <div className="bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-blue-500/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+                <AdminUserManager />
               </div>
             </div>
 

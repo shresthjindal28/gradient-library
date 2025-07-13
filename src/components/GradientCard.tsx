@@ -3,15 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 
 
-// Unified Gradient interface for both local and Cloudinary gradients
-export interface Gradient {
-  _id?: string;
-  public_id?: string;
-  name?: string;
-  imageUrl?: string;
-  url?: string;
-  created_at?: string;
-}
+import type { Gradient } from '../types/gradient';
 
 interface GradientCardProps {
   gradient: Gradient;

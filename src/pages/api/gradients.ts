@@ -64,8 +64,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const fileKeys = Object.keys(files);
           if (fileKeys.length > 0) {
             const fileInput = files[fileKeys[0]];
-            file = Array.isArray(fileInput) ? fileInput[0] : fileInput;
-            if (!file) file = null;
+            const resolvedFile = Array.isArray(fileInput) ? fileInput[0] : fileInput;
+            file = resolvedFile === undefined ? null : resolvedFile;
           }
         }
         if (!file || !file.filepath) {
