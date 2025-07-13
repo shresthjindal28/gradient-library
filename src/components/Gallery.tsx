@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useUser } from '@clerk/nextjs';
+import { useUser, SignInButton, SignUpButton } from '@clerk/nextjs';
 import GradientCard from './GradientCard';
 import GradientModal from './GradientModal';
 import type { Gradient } from '../types/gradient';
-import SearchBar from './SearchBar';
 import Carosal from './Carosal';
 
 
@@ -48,23 +47,34 @@ const localGradients: Gradient[] = [
 export default function Gallery() {
   const { user } = useUser();
   const [gradients, setGradients] = useState<Gradient[]>([]);
-  const [error, setError] = useState('');
+  // const [error, setError] = useState(''); // Removed as it's not displayed in UI
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGradient, setSelectedGradient] = useState<Gradient | null>(null);
 
   useEffect(() => {
+    // Only fetch gradients if user is authenticated
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     axios.get('/api/gradients')
       .then(res => {
         setGradients(res.data.gradients);
         setLoading(false);
       })
-      .catch(() => {
-        setError('Failed to load gradients');
+      .catch((error) => {
+        // Check if it's an authentication error
+        if (error.response?.status === 401) {
+          // setError('Please sign in to access gradients');
+        } else {
+          // setError('Failed to load gradients');
+        }
         setLoading(false);
       });
-  }, []);
+  }, [user]);
 
   const handleDownload = async (id: string) => {
     try {
@@ -94,8 +104,9 @@ export default function Gallery() {
       const response = await fetch(`/api/download?url=${encodeURIComponent(imageUrl)}`);
       if (!response.ok) {
         const text = await response.text();
-        setError(`Download failed: ${text}`);
-        setTimeout(() => setError(''), 3000);
+        // setError(`Download failed: ${text}`);
+        // setTimeout(() => setError(''), 3000);
+        console.error(`Download failed: ${text}`);
         return;
       }
       const blob = await response.blob();
@@ -108,8 +119,9 @@ export default function Gallery() {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(blobUrl);
     } catch {
-      setError('Download failed.');
-      setTimeout(() => setError(''), 3000);
+      // setError('Download failed.');
+      // setTimeout(() => setError(''), 3000);
+      console.error('Download failed.');
     }
   };
 
@@ -136,26 +148,9 @@ export default function Gallery() {
 
 
 
-        {/* Search Section */}
-        <SearchBar 
-          searchTerm={searchTerm} 
-          onSearchChange={setSearchTerm} 
-          onClearSearch={() => setSearchTerm('')} 
-        />
+       
 
-        {/* Error Message */}
-        {error && (
-          <div className="max-w-md mx-auto mb-8">
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 text-red-400 text-sm">
-              <div className="flex items-center">
-                <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                {error}
-              </div>
-            </div>
-          </div>
-        )}
+        
 
         {/* Content Section */}
         {loading ? (
@@ -168,13 +163,74 @@ export default function Gallery() {
         ) : filteredGradients.length === 0 ? (
           <div className="text-center py-20">
             <div className="max-w-md mx-auto">
-              <svg className="mx-auto h-16 w-16 text-gray-400 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <h3 className="text-xl font-semibold text-gray-300 mb-2">No gradients found</h3>
-              <p className="text-gray-500">
-                {searchTerm ? `No results for "${searchTerm}"` : 'No gradients available'}
-              </p>
+              {!user ? (
+                // Show login prompt when user is not authenticated
+                <div>
+                  <div className="relative mb-8">
+                    <div className="w-20 h-20 mx-auto bg-gradient-to-r from-[#CFFFE2] via-[#A2D5C6] to-[#F6F6F6] rounded-full flex items-center justify-center mb-6">
+                      <svg className="w-10 h-10 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <h3 className="text-3xl font-bold mb-4 bg-gradient-to-r from-[#CFFFE2] to-[#A2D5C6] bg-clip-text text-transparent">
+                    Please Sign In
+                  </h3>
+                  <p className="text-gray-300 mb-8 leading-relaxed">
+                    To access our beautiful collection of gradient images, please sign in to your account.
+                    <span className="block mt-2 text-[#CFFFE2] font-medium">
+                      Join thousands of designers and developers already using our library!
+                    </span>
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <SignInButton mode="modal">
+                      <button className="px-8 py-3 bg-gradient-to-r from-[#A2D5C6] via-[#CFFFE2] to-[#F6F6F6] text-black font-bold rounded-xl shadow-lg shadow-[#A2D5C6]/30 hover:shadow-[#A2D5C6]/50 transition-all duration-300 hover:-translate-y-1">
+                        Sign In
+                      </button>
+                    </SignInButton>
+                    <SignUpButton mode="modal">
+                      <button className="px-8 py-3 border-2 border-[#F6F6F6]/30 bg-[#F6F6F6]/5 backdrop-blur-sm text-[#F6F6F6] font-bold rounded-xl hover:border-[#F6F6F6]/50 hover:bg-[#F6F6F6]/10 transition-all duration-300 hover:-translate-y-1">
+                        Create Account
+                      </button>
+                    </SignUpButton>
+                  </div>
+                  <div className="mt-8 p-4 bg-gradient-to-r from-[#F6F6F6]/5 to-[#A2D5C6]/5 backdrop-blur-sm border border-[#F6F6F6]/20 rounded-xl">
+                    <div className="flex items-center justify-center gap-8 text-gray-300 text-sm">
+                      <div className="text-center">
+                        <div className="text-xl font-bold text-[#CFFFE2]">500+</div>
+                        <div>Gradients</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-xl font-bold text-[#CFFFE2]">Free</div>
+                        <div>Downloads</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-xl font-bold text-[#CFFFE2]">HD</div>
+                        <div>Quality</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                // Show no gradients found when user is authenticated but no gradients match search
+                <div>
+                  <svg className="mx-auto h-16 w-16 text-gray-400 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <h3 className="text-xl font-semibold text-gray-300 mb-2">No gradients found</h3>
+                  <p className="text-gray-500">
+                    {searchTerm ? `No results for "${searchTerm}"` : 'No gradients available'}
+                  </p>
+                  {searchTerm && (
+                    <button 
+                      onClick={() => setSearchTerm('')}
+                      className="mt-4 px-6 py-2 bg-gradient-to-r from-[#A2D5C6] to-[#CFFFE2] text-black font-medium rounded-lg hover:shadow-lg transition-all duration-300"
+                    >
+                      Clear Search
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         ) : (

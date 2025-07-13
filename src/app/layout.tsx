@@ -35,7 +35,6 @@ export default function RootLayout({
           <div className="gradient-bg-animation"></div>
           <SmoothScroll>
             {children}
-            
           </SmoothScroll>
         </body>
       </html>
