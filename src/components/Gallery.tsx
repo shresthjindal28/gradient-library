@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser, SignInButton, SignUpButton } from "@clerk/nextjs";
 import GradientCard from "./GradientCard";
-import GradientModal from "./GradientModal";
+
+import FullPageView from "./FullPageView";
 import type { Gradient } from "../types/gradient";
 import Carosal from "./Carosal";
 
@@ -48,7 +49,8 @@ export default function Gallery() {
   // const [error, setError] = useState(''); // Removed as it's not displayed in UI
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedGradient, setSelectedGradient] = useState<Gradient | null>(
+
+  const [fullPageGradient, setFullPageGradient] = useState<Gradient | null>(
     null
   );
 
@@ -112,10 +114,9 @@ export default function Gallery() {
         `/api/download?url=${encodeURIComponent(imageUrl)}`
       );
       if (!response.ok) {
-        const text = await response.text();
+        // await response.text(); // Removed unused variable 'text'
         // setError(`Download failed: ${text}`);
         // setTimeout(() => setError(''), 3000);
-        console.error(`Download failed: ${text}`);
         return;
       }
       const blob = await response.blob();
@@ -130,12 +131,11 @@ export default function Gallery() {
     } catch {
       // setError('Download failed.');
       // setTimeout(() => setError(''), 3000);
-      console.error("Download failed.");
     }
   };
 
-  const openModal = (gradient: Gradient) => setSelectedGradient(gradient);
-  const closeModal = () => setSelectedGradient(null);
+  const openModal = (gradient: Gradient) => setFullPageGradient(gradient);
+  const closeModal = () => setFullPageGradient(null);
 
   const filteredGradients = gradients.filter((g) => {
     const name = g.name || g.public_id || "";
@@ -335,14 +335,9 @@ export default function Gallery() {
         )}
       </div>
 
-      {/* Modal for selected gradient */}
-      <GradientModal
-        gradient={
-          selectedGradient &&
-          (selectedGradient._id || selectedGradient.public_id)
-            ? selectedGradient
-            : null
-        }
+      {/* Full-page view for selected gradient */}
+      <FullPageView
+        gradient={fullPageGradient}
         onClose={closeModal}
         onDownload={handleDownload}
         isUserLoggedIn={!!user}
