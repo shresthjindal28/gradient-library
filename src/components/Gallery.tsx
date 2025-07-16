@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser, SignInButton, SignUpButton } from "@clerk/nextjs";
-import GradientCard from "./GradientCard";
 
-import FullPageView from "./FullPageView";
+import { Suspense, lazy } from "react";
+const GradientCard = lazy(() => import("./GradientCard"));
+const FullPageView = lazy(() => import("./FullPageView"));
+const Carosal = lazy(() => import("./Carosal"));
 import type { Gradient } from "../types/gradient";
-import Carosal from "./Carosal";
 
 // Local gradients using images from public folder
 const localGradients: Gradient[] = [
@@ -150,7 +151,9 @@ export default function Gallery() {
   return (
     <div className="min-h-screen bg-black">
       <div className="max-w-full mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
-        <Carosal gradients={localGradients} />
+        <Suspense fallback={<div className="w-full h-32 flex items-center justify-center"><div className="w-8 h-8 border-4 border-purple-500/20 border-t-purple-500 rounded-full animate-spin"></div></div>}>
+          <Carosal gradients={localGradients} />
+        </Suspense>
 
         {/* Search Bar Section */}
         {user && (
@@ -303,25 +306,27 @@ export default function Gallery() {
           </div>
         ) : (
           <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6 2xl:columns-7 gap-2 sm:gap-3 md:gap-4 lg:gap-5 xl:gap-6 space-y-0">
-            {filteredGradients.map((gradient) => {
-              const id = getGradientId(gradient);
-              return (
-                <div key={id} className="break-inside-avoid mb-2 sm:mb-3 md:mb-4 lg:mb-5 xl:mb-6 w-full">
-                  <GradientCard
-                    gradient={{
-                      ...gradient,
-                      name: gradient.name || gradient.public_id || 'Untitled',
-                      imageUrl: gradient.imageUrl || gradient.url || '',
-                      _id: gradient._id,
-                      public_id: gradient.public_id,
-                    }}
-                    onDownload={handleDownload}
-                    onOpenModal={openModal}
-                    isUserLoggedIn={!!user}
-                  />
-                </div>
-              );
-            })}
+            <Suspense fallback={<div className="w-full h-32 flex items-center justify-center"><div className="w-8 h-8 border-4 border-purple-500/20 border-t-purple-500 rounded-full animate-spin"></div></div>}>
+              {filteredGradients.map((gradient) => {
+                const id = getGradientId(gradient);
+                return (
+                  <div key={id} className="break-inside-avoid mb-2 sm:mb-3 md:mb-4 lg:mb-5 xl:mb-6 w-full">
+                    <GradientCard
+                      gradient={{
+                        ...gradient,
+                        name: gradient.name || gradient.public_id || 'Untitled',
+                        imageUrl: gradient.imageUrl || gradient.url || '',
+                        _id: gradient._id,
+                        public_id: gradient.public_id,
+                      }}
+                      onDownload={handleDownload}
+                      onOpenModal={openModal}
+                      isUserLoggedIn={!!user}
+                    />
+                  </div>
+                );
+              })}
+            </Suspense>
           </div>
         )}
 
@@ -336,12 +341,14 @@ export default function Gallery() {
       </div>
 
       {/* Full-page view for selected gradient */}
-      <FullPageView
-        gradient={fullPageGradient}
-        onClose={closeModal}
-        onDownload={handleDownload}
-        isUserLoggedIn={!!user}
-      />
+      <Suspense fallback={null}>
+        <FullPageView
+          gradient={fullPageGradient}
+          onClose={closeModal}
+          onDownload={handleDownload}
+          isUserLoggedIn={!!user}
+        />
+      </Suspense>
     </div>
   );
 }
