@@ -203,7 +203,7 @@ export default function AdminPage() {
             </div>
 
             {/* Quick Actions Dashboard */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
               {/* Upload Quick Action */}
               <div className="lg:col-span-2">
                 <div className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-2xl border border-white/10 rounded-2xl p-8 h-full">
@@ -256,7 +256,7 @@ export default function AdminPage() {
             </div>
 
             {/* Management Sections */}
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-6 sm:gap-8">
               {/* Gradient Management */}
               <div className="bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-2xl border border-white/10 rounded-2xl p-8">
                 <AdminGradientManager />
@@ -276,7 +276,7 @@ export default function AdminPage() {
                 </span>
               </h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 sm:gap-6">
                 {adminFeatures.map((feature) => (
                   <div
                     key={feature.id}

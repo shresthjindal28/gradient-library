@@ -37,24 +37,24 @@ export default function DocsPage() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative py-20 px-8">
+      <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-[#CFFFE2] via-[#A2D5C6] to-[#F6F6F6] bg-clip-text text-transparent tracking-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 sm:mb-6 bg-gradient-to-r from-[#CFFFE2] via-[#A2D5C6] to-[#F6F6F6] bg-clip-text text-transparent tracking-tight">
             Documentation
           </h1>
-          <p className="text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto">
             Everything you need to know about using Gradora Gradient Library
           </p>
         </div>
       </section>
 
       {/* Main Content */}
-      <div className="relative flex-1 max-w-6xl mx-auto px-8 pb-16">
-        <div className="grid lg:grid-cols-4 gap-8">
+      <div className="relative flex-1 max-w-6xl mx-auto px-4 sm:px-6 md:px-8 pb-12 sm:pb-16">
+        <div className="grid lg:grid-cols-4 gap-6 sm:gap-8">
           
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="sticky top-24 bg-gradient-to-br from-[#F6F6F6]/5 to-[#A2D5C6]/5 backdrop-blur-sm border border-[#F6F6F6]/20 rounded-2xl p-6">
+            <div className="sticky top-20 sm:top-24 bg-gradient-to-br from-[#F6F6F6]/5 to-[#A2D5C6]/5 backdrop-blur-sm border border-[#F6F6F6]/20 rounded-xl sm:rounded-2xl p-4 sm:p-6">
               <h3 className="text-lg font-bold mb-4 text-[#CFFFE2]">Table of Contents</h3>
               <nav className="space-y-2">
                 <a href="#overview" className="block text-gray-300 hover:text-[#CFFFE2] transition-colors text-sm">Overview</a>
@@ -99,29 +99,29 @@ export default function DocsPage() {
                 <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-[#CFFFE2] to-[#A2D5C6] bg-clip-text text-transparent">
                   Key Features
                 </h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-[#F6F6F6]/5 border border-[#F6F6F6]/10 rounded-xl p-6">
-                    <h3 className="text-xl font-semibold text-[#CFFFE2] mb-3">🎨 Curated Collection</h3>
+                <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                  <div className="bg-[#F6F6F6]/5 border border-[#F6F6F6]/10 rounded-lg sm:rounded-xl p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-semibold text-[#CFFFE2] mb-2 sm:mb-3">🎨 Curated Collection</h3>
                     <p className="text-gray-300 text-sm">Over 500+ handpicked gradient images carefully selected for quality and versatility.</p>
                   </div>
-                  <div className="bg-[#F6F6F6]/5 border border-[#F6F6F6]/10 rounded-xl p-6">
-                    <h3 className="text-xl font-semibold text-[#CFFFE2] mb-3">📱 Responsive Design</h3>
+                  <div className="bg-[#F6F6F6]/5 border border-[#F6F6F6]/10 rounded-lg sm:rounded-xl p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-semibold text-[#CFFFE2] mb-2 sm:mb-3">📱 Responsive Design</h3>
                     <p className="text-gray-300 text-sm">Fully responsive interface that works seamlessly across all devices and screen sizes.</p>
                   </div>
-                  <div className="bg-[#F6F6F6]/5 border border-[#F6F6F6]/10 rounded-xl p-6">
-                    <h3 className="text-xl font-semibold text-[#CFFFE2] mb-3">🔍 Advanced Search</h3>
+                  <div className="bg-[#F6F6F6]/5 border border-[#F6F6F6]/10 rounded-lg sm:rounded-xl p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-semibold text-[#CFFFE2] mb-2 sm:mb-3">🔍 Advanced Search</h3>
                     <p className="text-gray-300 text-sm">Powerful search functionality to quickly find the perfect gradient for your needs.</p>
                   </div>
-                  <div className="bg-[#F6F6F6]/5 border border-[#F6F6F6]/10 rounded-xl p-6">
-                    <h3 className="text-xl font-semibold text-[#CFFFE2] mb-3">⚡ Fast Downloads</h3>
+                  <div className="bg-[#F6F6F6]/5 border border-[#F6F6F6]/10 rounded-lg sm:rounded-xl p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-semibold text-[#CFFFE2] mb-2 sm:mb-3">⚡ Fast Downloads</h3>
                     <p className="text-gray-300 text-sm">Instant, high-quality downloads with multiple format options available.</p>
                   </div>
-                  <div className="bg-[#F6F6F6]/5 border border-[#F6F6F6]/10 rounded-xl p-6">
-                    <h3 className="text-xl font-semibold text-[#CFFFE2] mb-3">🔐 User Authentication</h3>
+                  <div className="bg-[#F6F6F6]/5 border border-[#F6F6F6]/10 rounded-lg sm:rounded-xl p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-semibold text-[#CFFFE2] mb-2 sm:mb-3">🔐 User Authentication</h3>
                     <p className="text-gray-300 text-sm">Secure user authentication powered by Clerk for personalized experience.</p>
                   </div>
-                  <div className="bg-[#F6F6F6]/5 border border-[#F6F6F6]/10 rounded-xl p-6">
-                    <h3 className="text-xl font-semibold text-[#CFFFE2] mb-3">🛡️ Admin Panel</h3>
+                  <div className="bg-[#F6F6F6]/5 border border-[#F6F6F6]/10 rounded-lg sm:rounded-xl p-4 sm:p-6">
+                    <h3 className="text-lg sm:text-xl font-semibold text-[#CFFFE2] mb-2 sm:mb-3">🛡️ Admin Panel</h3>
                     <p className="text-gray-300 text-sm">Comprehensive admin dashboard for content management and user administration.</p>
                   </div>
                 </div>

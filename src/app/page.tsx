@@ -28,7 +28,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen bg-black text-white overflow-hidden">
       <Navigation />
       {/* Hero Section */}
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[75vh] sm:min-h-[80vh] lg:min-h-[85vh] flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8">
         {/* Floating particles */}
         <div className="absolute inset-0 overflow-hidden">
           {particles.map((particle, i) => (
@@ -45,17 +45,14 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="relative z-10 text-center max-w-4xl mx-auto px-8">
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-4 sm:px-6 md:px-8">
           {/* Main heading with enhanced styling */}
-          <h1 className="text-6xl md:text-8xl font-black mb-6 bg-gradient-to-r from-[#CFFFE2] via-[#A2D5C6] to-[#F6F6F6] bg-clip-text text-transparent tracking-tight leading-tight">
-            Gradient
-            <span className="block bg-gradient-to-r from-[#A2D5C6] via-[#CFFFE2] to-[#F6F6F6] bg-clip-text text-transparent">
-              Library
-            </span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 sm:mb-6 bg-gradient-to-r from-[#CFFFE2] via-[#A2D5C6] to-[#F6F6F6] bg-clip-text text-transparent tracking-tight leading-tight">
+            GRADORA
           </h1>
           
           {/* Subtitle with enhanced typography */}
-          <p className="text-xl md:text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed max-w-2xl mx-auto">
             Discover and download beautiful gradient images for your projects. 
             <span className="block text-[#CFFFE2] font-semibold mt-2">
               Transform your designs with stunning visual effects.
@@ -63,32 +60,32 @@ export default function Home() {
           </p>
           
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-7">
-            <button className="group relative px-8 py-4 rounded-2xl bg-gradient-to-r from-[#A2D5C6] via-[#CFFFE2] to-[#F6F6F6] text-black font-bold text-lg shadow-lg shadow-[#A2D5C6]/30 hover:shadow-[#A2D5C6]/50 transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-6 justify-center items-center mb-6 sm:mb-7 lg:mb-8">
+            <button className="w-full sm:w-auto group relative px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#A2D5C6] via-[#CFFFE2] to-[#F6F6F6] text-black font-bold text-base sm:text-lg lg:text-xl shadow-lg shadow-[#A2D5C6]/30 hover:shadow-[#A2D5C6]/50 transition-all duration-300 hover:-translate-y-1 overflow-hidden">
               <span className="relative z-20">Explore Gradients</span>
             </button>
             
-            <Link href="/docs">
-              <button className="group relative px-8 py-4 rounded-2xl border-2 border-[#F6F6F6]/30 bg-[#F6F6F6]/5 backdrop-blur-sm text-[#F6F6F6] font-bold text-lg hover:border-[#F6F6F6]/50 hover:bg-[#F6F6F6]/10 transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+            <Link href="/docs" className="w-full sm:w-auto">
+              <button className="w-full group relative px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 rounded-xl sm:rounded-2xl border-2 border-[#F6F6F6]/30 bg-[#F6F6F6]/5 backdrop-blur-sm text-[#F6F6F6] font-bold text-base sm:text-lg lg:text-xl hover:border-[#F6F6F6]/50 hover:bg-[#F6F6F6]/10 transition-all duration-300 hover:-translate-y-1 overflow-hidden">
                 <span className="relative z-20">Learn More</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-[#F6F6F6]/0 via-[#F6F6F6]/10 to-[#F6F6F6]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 rounded-2xl z-10"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#F6F6F6]/0 via-[#F6F6F6]/10 to-[#F6F6F6]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 rounded-xl sm:rounded-2xl z-10"></div>
               </button>
             </Link>
           </div>
           
           {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10 max-w-3xl mx-auto">
             <div className="text-center group">
-              <div className="text-3xl font-bold bg-gradient-to-r from-[#CFFFE2] to-[#A2D5C6] bg-clip-text text-transparent mb-2">500+</div>
-              <div className="text-gray-400 text-sm font-medium">Gradient Collections</div>
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-[#CFFFE2] to-[#A2D5C6] bg-clip-text text-transparent mb-2">500+</div>
+              <div className="text-gray-400 text-xs sm:text-sm lg:text-base font-medium">Gradient Collections</div>
             </div>
             <div className="text-center group">
-              <div className="text-3xl font-bold bg-gradient-to-r from-[#A2D5C6] to-[#CFFFE2] bg-clip-text text-transparent mb-2">10K+</div>
-              <div className="text-gray-400 text-sm font-medium">Downloads</div>
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-[#A2D5C6] to-[#CFFFE2] bg-clip-text text-transparent mb-2">10K+</div>
+              <div className="text-gray-400 text-xs sm:text-sm lg:text-base font-medium">Downloads</div>
             </div>
             <div className="text-center group">
-              <div className="text-3xl font-bold bg-gradient-to-r from-[#CFFFE2] to-[#F6F6F6] bg-clip-text text-transparent mb-2">24/7</div>
-              <div className="text-gray-400 text-sm font-medium">Available</div>
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-[#CFFFE2] to-[#F6F6F6] bg-clip-text text-transparent mb-2">24/7</div>
+              <div className="text-gray-400 text-xs sm:text-sm lg:text-base font-medium">Available</div>
             </div>
           </div>
         </div>
@@ -97,13 +94,13 @@ export default function Home() {
       </section>
 
       {/* Gallery Section */}
-      <section className="relative py-16">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-[#CFFFE2] to-[#A2D5C6] bg-clip-text text-transparent">
+      <section className="relative py-8 sm:py-12 md:py-16">
+        <div className="w-full px-2 sm:px-4 md:px-6 lg:px-8">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16 max-w-4xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-[#CFFFE2] to-[#A2D5C6] bg-clip-text text-transparent">
               Featured Gradients
             </h2>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
               Handpicked gradients to inspire your next project
             </p>
           </div>
@@ -229,7 +226,7 @@ export default function Home() {
           {/* Copyright */}
           <div className="text-center">
             <p className="text-gray-400 text-sm">
-              &copy; {new Date().getFullYear()} Gradient Library. All rights reserved.
+              &copy; {new Date().getFullYear()} GRADORA. All rights reserved.
             </p>
           </div>
         </div>

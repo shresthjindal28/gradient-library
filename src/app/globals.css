@@ -189,3 +189,25 @@
   }
 }
 
+/* Masonry Layout Enhancements */
+.masonry-container {
+  column-fill: balance;
+}
+
+/* Prevent column breaks inside gradient cards */
+.masonry-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  display: inline-block;
+  width: 100%;
+}
+
+/* Improved image loading and aspect ratio preservation */
+.gradient-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+}
+

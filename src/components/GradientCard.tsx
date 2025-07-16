@@ -24,16 +24,16 @@ export default function GradientCard({
   const imageUrl = gradient.imageUrl || gradient.url || '';
 
   return (
-    <div className="group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-2 relative">
+    <div className="group bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-purple-500/20 hover:-translate-y-1 sm:hover:-translate-y-2 relative w-full">
       {/* Download Icon in Top-Right Corner - always visible and outside modal trigger */}
-      <div className="absolute top-3 right-3 z-20">
+      <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20">
         <button 
           onClick={(e) => {
             e.stopPropagation();
             onDownload(id);
           }}
           disabled={!isUserLoggedIn || !id}
-          className={`p-3 rounded-full transition-all duration-200 transform hover:scale-110 shadow-lg ${
+          className={`p-2 sm:p-3 rounded-full transition-all duration-200 transform hover:scale-110 shadow-lg ${
             isUserLoggedIn 
               ? 'bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white hover:shadow-xl hover:shadow-purple-500/30' 
               : 'bg-gray-600 text-gray-400 cursor-not-allowed'
@@ -41,7 +41,7 @@ export default function GradientCard({
           title={isUserLoggedIn ? 'Download' : 'Login to Download'}
         >
           <svg 
-            className="w-5 h-5" 
+            className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" 
             fill="none" 
             stroke="currentColor" 
             viewBox="0 0 24 24" 
@@ -56,19 +56,24 @@ export default function GradientCard({
           </svg>
         </button>
       </div>
-      {/* Image Container - only triggers modal */}
-      <div className="relative aspect-square overflow-hidden cursor-pointer" onClick={() => onOpenModal(gradient)}>
+      {/* Image Container - maintaining original aspect ratio for masonry layout */}
+      <div className="relative w-full overflow-hidden cursor-pointer" onClick={() => onOpenModal(gradient)}>
         <Image 
           src={imageUrl} 
           alt={name} 
-          width={400} 
-          height={400} 
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+          width={0}
+          height={0}
+          sizes="(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, (max-width: 1280px) 16vw, (max-width: 1536px) 14vw, 12vw"
+          className="gradient-image w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105" 
+          style={{ aspectRatio: 'auto' }}
+          priority={false}
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkbHB0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
         />
         {/* Hover Overlay for View Details */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <div className="bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 border border-white/30">
-            <span className="text-white font-medium text-sm">View Details</span>
+          <div className="bg-white/20 backdrop-blur-sm rounded-full px-2 py-1 sm:px-3 sm:py-2 md:px-4 md:py-2 lg:px-6 lg:py-3 border border-white/30">
+            <span className="text-white font-medium text-xs sm:text-sm md:text-base">View Details</span>
           </div>
         </div>
       </div>
