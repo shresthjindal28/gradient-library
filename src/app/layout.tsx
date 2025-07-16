@@ -1,8 +1,10 @@
+
+
 import React from "react";
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import { ClerkProvider } from '@clerk/nextjs';
-import SmoothScroll from "@/components/SmoothScroll";
+import ClientRoot from "../components/ClientRoot";
 import "./globals.css";
 
 const inter = Inter({
@@ -21,6 +23,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Gradora | Beautiful Gradients Collection",
   description: "Explore and download beautiful gradient images for your projects",
+  icons:{
+    icon: "/Logo.png"
+  }
 };
 
 export default function RootLayout({
@@ -32,10 +37,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`${inter.variable} ${poppins.variable} antialiased`}>
-          <div className="gradient-bg-animation"></div>
-          <SmoothScroll>
-            {children}
-          </SmoothScroll>
+          <ClientRoot>{children}</ClientRoot>
         </body>
       </html>
     </ClerkProvider>
