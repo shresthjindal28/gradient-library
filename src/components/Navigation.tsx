@@ -146,7 +146,7 @@ const Navigation: React.FC<NavigationProps> = () => {
           </div>
 
           {/* Enhanced auth buttons */}
-          <div className="flex gap-3">
+          <div className="hidden md:flex gap-3">
             <SignedOut>
               <SignInButton>
                 <button className="group relative px-5 py-2 rounded-xl border border-[#F6F6F6]/30 bg-[#F6F6F6]/5 backdrop-blur-sm text-white/90 font-semibold cursor-pointer transition-all duration-300 hover:border-[#F6F6F6]/50 hover:text-white hover:bg-[#F6F6F6]/10 hover:shadow-lg hover:shadow-[#F6F6F6]/10 overflow-hidden">

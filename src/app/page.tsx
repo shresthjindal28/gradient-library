@@ -74,7 +74,7 @@ export default function Home() {
           </div>
           
           {/* Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10 max-w-3xl mx-auto">
+          <div className="grid grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10 max-w-3xl mx-auto">
             <div className="text-center group">
               <div className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-[#CFFFE2] to-[#A2D5C6] bg-clip-text text-transparent mb-2">500+</div>
               <div className="text-gray-400 text-xs sm:text-sm lg:text-base font-medium">Gradient Collections</div>
