@@ -25,7 +25,6 @@ export default function DocsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       <Navigation />
-      
       {/* Floating particles */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         {particles.map((particle, i) => (
@@ -35,10 +34,13 @@ export default function DocsPage() {
           ></div>
         ))}
       </div>
-
       {/* Hero Section */}
       <section className="relative py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 md:px-8">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center flex flex-col items-center">
+          <span className="block w-24 h-24 md:w-32 md:h-32 mb-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/Logo.png" alt="Gradora Logo" className="w-full h-full object-contain mx-auto drop-shadow-xl" />
+          </span>
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 sm:mb-6 bg-gradient-to-r from-[#CFFFE2] via-[#A2D5C6] to-[#F6F6F6] bg-clip-text text-transparent tracking-tight">
             Documentation
           </h1>

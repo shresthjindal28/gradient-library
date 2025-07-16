@@ -48,18 +48,16 @@ const Navigation: React.FC<NavigationProps> = () => {
   }, [isMobileMenuOpen]);
   return (
     <nav ref={mobileMenuRef} className="sticky top-0 left-0 right-0 z-[100] backdrop-blur-3xl bg-transparent border border-white/10 border-t-0 shadow-2xl shadow-black/20">
-      
       {/* Animated background gradient line */}
       <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#CFFFE2]/60 to-transparent"></div>
-      
       <div className="flex justify-between items-center p-4 md:px-6 max-w-7xl mx-auto relative z-10">
         {/* Logo with enhanced styling */}
         <div className="flex items-center group">
-          <Link href="/" className="relative">
-            <h1 className="text-2xl md:text-3xl font-black bg-gradient-to-r from-[#CFFFE2] via-[#A2D5C6] to-[#F6F6F6] bg-clip-text text-transparent tracking-wider transform transition-all duration-500 hover:scale-105 hover:tracking-widest relative drop-shadow-lg">
-              GRADORA
-              <div className="absolute -inset-1 bg-gradient-to-r from-[#A2D5C6]/30 to-[#CFFFE2]/30 rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-500 z-10"></div>
-            </h1>
+          <Link href="/" className="relative flex items-center gap-2">
+            <span className="block w-12 h-12 md:w-14 md:h-14 relative">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/Logo.png" alt="Gradora Logo" className="w-full h-full object-contain drop-shadow-lg" />
+            </span>
           </Link>
         </div>
         

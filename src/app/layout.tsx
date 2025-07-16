@@ -19,7 +19,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Gradient Library | Beautiful Gradients Collection",
+  title: "Gradora | Beautiful Gradients Collection",
   description: "Explore and download beautiful gradient images for your projects",
 };
 

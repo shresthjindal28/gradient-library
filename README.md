@@ -1,3 +1,8 @@
+
+<p align="center">
+  <img src="./public/Logo.png" alt="Gradora Logo" width="180" height="180" />
+</p>
+
 # Gradient Library
 
 A beautiful gradient image library built with Next.js, featuring a modern UI and seamless user experience.
